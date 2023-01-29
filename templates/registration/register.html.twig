@@ -2,16 +2,31 @@
 
 {% block title %}Register{% endblock %}
 
-{% block login_box %}
+{% block login_form %}
     <h1>Register</h1>
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {{ form_row(registrationForm.firstName, {'attr': {'placeholder': 'Enter your first name'}}) }}
+        {{ form_row(registrationForm.lastName, {'attr': {'placeholder': 'Enter Your Last name'}}) }}
+        {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Your Address mail here'}}) }}
+        {{ form_row(registrationForm.password, {'attr': {'placeholder': 'Enter your password'}}) }}
+        {{ form_row(registrationForm.confirmPassword, {'attr': {'placeholder': 'Repeat your password'}}) }}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn btn-success">Register</button>
     {{ form_end(registrationForm) }}
+{% endblock %}
+
+
+{% block login_actions %}
+    {% if 'adminlte_password_reset'|route_alias != 'adminlte_password_reset' %}
+        <a href="{{ path('adminlte_password_reset'|route_alias) }}">
+            {{ 'I forgot my password'|trans({}, 'AdminLTEBundle') }}
+        </a>
+        <br>
+    {% endif %}
+    {% if 'adminlte_login'|route_alias != 'adminlte_login' %}
+        <a href="{{ path('adminlte_login'|route_alias) }}" class="text-center">
+            {{ 'Back to login'|trans({}, 'AdminLTEBundle') }}
+        </a>
+    {% endif %}
 {% endblock %}
