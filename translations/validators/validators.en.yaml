@@ -1,2 +1,3 @@
 you did not type the same password: you did not type the same password
 There is already an account with this email: There is already an account with this email
+Your password must be at least {{ limit }} characters long: Your password must be at least {{ limit }} characters long
