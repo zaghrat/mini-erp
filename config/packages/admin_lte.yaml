@@ -12,7 +12,7 @@ admin_lte:
         fixed_layout: false
         boxed_layout: false
         collapsed_sidebar: false
-        mini_sidebar: false
+        mini_sidebar: true
 
     knp_menu:
         enable: false
@@ -21,6 +21,14 @@ admin_lte:
         adminlte_welcome: app_index
         adminlte_login: app_login
         adminlte_login_check: app_login
-        adminlte_profile: app_profile
         adminlte_registration: app_register
         adminlte_password_reset: app_forgot_password_request
+
+        adminlte_profile: app_index
+        adminlte_notification: app_index
+        adminlte_notifications: app_index
+        adminlte_task: app_index
+        adminlte_tasks: app_index
+        adminlte_message: app_index
+        adminlte_messages: app_index
+

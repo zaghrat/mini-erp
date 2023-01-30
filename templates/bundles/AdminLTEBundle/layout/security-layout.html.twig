@@ -29,6 +29,12 @@
                         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
                 {% endblock %}
+
+                {% block login_box_success %}
+                    {% for flash in app.flashes('success') %}
+                        <div class="alert alert-success">{{ flash }}</div>
+                    {% endfor %}
+                {% endblock %}
             </div>
             {% block login_form %}{% endblock %}
             <hr>
