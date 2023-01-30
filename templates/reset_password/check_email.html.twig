@@ -1,0 +1,28 @@
+{% extends '@AdminLTE/layout/security-layout.html.twig' %}
+
+{% block title %}Password Reset Email Sent{% endblock %}
+
+{% block login_form %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <p>
+        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
+        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+{% endblock %}
+
+
+{% block login_actions %}
+    {% if 'adminlte_registration'|route_alias != 'adminlte_registration' %}
+        <a href="{{ path('adminlte_registration'|route_alias) }}" class="text-center">
+            {{ 'Register a new account'|trans({}, 'AdminLTEBundle') }}
+        </a>
+    {% endif %} <br>
+    {% if 'adminlte_login'|route_alias != 'adminlte_login' %}
+        <a href="{{ path('adminlte_login'|route_alias) }}" class="text-center">
+            {{ 'Back to login'|trans({}, 'AdminLTEBundle') }}
+        </a>
+    {% endif %}
+{% endblock %}
