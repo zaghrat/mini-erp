@@ -23,4 +23,4 @@ admin_lte:
         adminlte_login_check: app_login
         adminlte_profile: app_profile
         adminlte_registration: app_register
-        adminlte_password_reset: app_register
+        adminlte_password_reset: app_forgot_password_request

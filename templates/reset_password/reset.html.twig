@@ -1,0 +1,29 @@
+{% extends '@AdminLTE/layout/security-layout.html.twig' %}
+
+{% block title %}Reset your password{% endblock %}
+
+{% block login_form %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <h1>Reset your password</h1>
+
+    {{ form_start(resetForm) }}
+        {{ form_row(resetForm.plainPassword) }}
+        <button class="btn btn-primary">Reset password</button>
+    {{ form_end(resetForm) }}
+{% endblock %}
+
+
+{% block login_actions %}
+    {% if 'adminlte_registration'|route_alias != 'adminlte_registration' %}
+        <a href="{{ path('adminlte_registration'|route_alias) }}" class="text-center">
+            {{ 'Register a new account'|trans({}, 'AdminLTEBundle') }}
+        </a>
+    {% endif %} <br>
+    {% if 'adminlte_login'|route_alias != 'adminlte_login' %}
+        <a href="{{ path('adminlte_login'|route_alias) }}" class="text-center">
+            {{ 'Back to login'|trans({}, 'AdminLTEBundle') }}
+        </a>
+    {% endif %}
+{% endblock %}
