@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\UsersAuthenticator;
+use App\Service\EmailSender\RegisterValidationEmailSenderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +25,8 @@ class RegistrationController extends AbstractController
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
-        VerifyEmailHelperInterface $verifyEmailHelper
+        VerifyEmailHelperInterface $verifyEmailHelper,
+        RegisterValidationEmailSenderService $registerValidationEmailSenderService
     ): Response
     {
         if ($this->getUser()) {
@@ -54,13 +56,12 @@ class RegistrationController extends AbstractController
                 ['id' => $user->getId()]
             );
 
-            // TODO: in a real app, send this as an email!
-            $this->addFlash('success', 'Confirm your email at: '.$signatureComponents->getSignedUrl());
 
-            // do anything else you need here, like send an email
-            //todo send Email when user register (message to rabbitMQ)
+            //send email validation token
+            $registerValidationEmailSenderService->sendEmail($user, $signatureComponents->getSignedUrl());
+            $this->addFlash('success', 'We sent you an Email to verify your E-mail address');
 
-            $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -73,7 +74,7 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(Request $request, VerifyEmailHelperInterface $verifyEmailHelper, UserRepository $userRepository, EntityManagerInterface $entityManager): Response
     {
-        $user = $userRepository->find($request->query->get('id'));
+        $user = $userRepository->find($request->get('id'));
         if (!$user) {
             throw $this->createNotFoundException();
         }

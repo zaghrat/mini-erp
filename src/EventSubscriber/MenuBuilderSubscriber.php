@@ -17,15 +17,10 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
 
     public function onSetupMenu(SidebarMenuEvent $event)
     {
-        $blog = new MenuItemModel('blogId', 'Blog', 'item_symfony_route', [], 'fas fa-tachometer-alt');
-
-        $blog->addChild(
-            new MenuItemModel('ChildOneItemId', 'ChildOneDisplayName', 'app_index', [], 'fas fa-rss-square')
-        )->addChild(
-            new MenuItemModel('ChildTwoItemId', 'ChildTwoDisplayName', 'app_index')
-        );
-
-        $event->addItem($blog);
+        foreach ($this->getMenuItems() as $menuItem) {
+            $menuItem = new MenuItemModel($menuItem['key'], $menuItem['label'], $menuItem['route'], [], $menuItem['icon']);
+            $event->addItem($menuItem);
+        }
 
         $this->activateByRoute(
             $event->getRequest()->get('_route'),
@@ -37,7 +32,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
      * @param string $route
      * @param MenuItemModel[] $items
      */
-    protected function activateByRoute($route, $items)
+    protected function activateByRoute(string $route, array $items)
     {
         foreach ($items as $item) {
             if ($item->hasChildren()) {
@@ -46,5 +41,22 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                 $item->setIsActive(true);
             }
         }
+    }
+
+    protected function getMenuItems(): array
+    {
+
+        return [
+            ['label' => 'Dashboard', 'icon' => 'fas fa-regular fa-chart-line', 'route' => 'app_index', 'key' => 'Dashboard'],
+            ['label' => 'Clients', 'icon' => 'fas fa-users', 'route' => 'app_login', 'key' => 'Clients'],
+            ['label' => 'Fournisseurs', 'icon' => 'fas fa-truck', 'route' => 'app_login', 'key' => 'Fournisseurs'],
+            ['label' => 'Articles', 'icon' => 'fas fa-sitemap', 'route' => 'app_login', 'key' => 'Articles'],
+            ['label' => 'Stock', 'icon' => 'fas fa-cubes', 'route' => 'app_login', 'key' => 'Stock'],
+            ['label' => 'Achat Fournisseur', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Achat Fournisseur'],
+            ['label' => 'Vente Client', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Vente Client'],
+            ['label' => 'Recouvrement', 'icon' => 'fas fa-users', 'route' => 'app_login', 'key' => 'Recuvrement'],
+            ['label' => 'cash box', 'icon' => 'fas fa-inbox', 'route' => 'app_login', 'key' => 'Caisse'],
+            ['label' => 'Configuration', 'icon' => 'fas fa-cogs', 'route' => 'app_login', 'key' => 'Configuration'],
+        ];
     }
 }
