@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email', groups: ['registration', 'user_profile'])]
 #[Gedmo\Loggable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -47,17 +47,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $password;
     #[Assert\EqualTo(
         propertyPath: "password",
-        message: "you did not type the same password"
+        message: "you did not type the same password",
+        groups: ['registration']
     )]
     private string $confirmPassword;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Versioned]
-    private ?string $firstName = null;
+    private string $firstName;
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Versioned]
-    private ?string $lastName = null;
+    private string $lastName;
 
     /**
      * @var DateTimeImmutable
