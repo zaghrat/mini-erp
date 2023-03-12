@@ -3,6 +3,7 @@ version: "3.8"
 services:
     db:
         image: mysql
+        container_name: erp-db
         volumes:
             - db-data:/var/lib/mysql
         environment:
@@ -23,6 +24,7 @@ services:
 
     app:
         build: php
+        container_name: erp-app
         ports:
             - "8000:80"
         volumes:

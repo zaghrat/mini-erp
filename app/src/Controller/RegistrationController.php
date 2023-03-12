@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -46,7 +47,14 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            $company = new Company();
+            $company
+                ->setName('Company Name')
+                ->addUser($user)
+            ;
+
             $entityManager->persist($user);
+            $entityManager->persist($company);
             $entityManager->flush();
 
             $signatureComponents = $verifyEmailHelper->generateSignature(
