@@ -810,9 +810,9 @@
             'dev_requirement' => false,
         ),
         'symfony/asset' => array(
-            'pretty_version' => 'v5.4.13',
-            'version' => '5.4.13.0',
-            'reference' => '9aa867206711cb6fcca51ef127ba52a018170be9',
+            'pretty_version' => 'v5.4.21',
+            'version' => '5.4.21.0',
+            'reference' => '1504b6773c6b90118f9871e90a67833b5d1dca3c',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/asset',
             'aliases' => array(),

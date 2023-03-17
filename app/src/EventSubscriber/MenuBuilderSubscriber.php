@@ -57,7 +57,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             ['label' => 'Vente Client', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Vente Client'],
             ['label' => 'Recouvrement', 'icon' => 'fas fa-users', 'route' => 'app_login', 'key' => 'Recuvrement'],
             ['label' => 'cash box', 'icon' => 'fas fa-inbox', 'route' => 'app_login', 'key' => 'Caisse'],
-            ['label' => 'Configuration', 'icon' => 'fas fa-cogs', 'route' => 'app_general_settings', 'key' => 'Configuration'],
+            ['label' => 'Configuration', 'icon' => 'fas fa-cogs', 'route' => 'app_company_settings', 'key' => 'Configuration'],
         ];
     }
 }
