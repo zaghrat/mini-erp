@@ -15,14 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanySettingsController extends AbstractController
 {
     #[Route('/general/settings', name: 'app_company_settings')]
-    public function companySettings(FormFactoryInterface $formFactory): Response
+    public function companySettings(EntityManagerInterface $entityManager): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $company = $user->getCompany();
 
         $form = $this->createForm(CompanySettingsType::class, $company, ['disabled_fields' => true]);
-
 
         return $this->render('settings/company_settings/companySettings.html.twig', [
             'form' => $form->createView()
@@ -47,10 +46,7 @@ class CompanySettingsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //todo save changes and return Json Response
-
             $company = $form->getData();
-
             $entityManager->persist($company);
             $entityManager->flush();
 
