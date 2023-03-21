@@ -48,10 +48,7 @@ class RegistrationController extends AbstractController
             );
 
             $company = new Company();
-            $company
-                ->setName('Company Name')
-                ->addUser($user)
-            ;
+            $company->addUser($user);
 
             $entityManager->persist($user);
             $entityManager->persist($company);
