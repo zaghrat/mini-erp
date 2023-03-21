@@ -6,24 +6,26 @@ use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 class Company
 {
     private const DEFAULT_CURRENCY = 'TND';
+    private const DEFAULT_NAME = 'COMPANY NAME';
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\Column(length: 255, nullable: false)]
+    #[Assert\NotBlank]
+    private string $name = self::DEFAULT_NAME;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logo = null;
-
-    #[ORM\Column(length: 10, nullable: true)]
-    private ?string $currency = null;
+    #[Assert\NotBlank]
+    #[Assert\Currency]
+    #[ORM\Column(length: 10, nullable: false)]
+    private string $currency = self::DEFAULT_CURRENCY;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
@@ -50,24 +52,12 @@ class Company
         return $this;
     }
 
-    public function getLogo(): ?string
+    public function getCurrency(): string
     {
-        return $this->logo;
+        return $this->currency;
     }
 
-    public function setLogo(?string $logo): self
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
-
-    public function getCurrency(): ?string
-    {
-        return $this->currency ?? self::DEFAULT_CURRENCY;
-    }
-
-    public function setCurrency(?string $currency): self
+    public function setCurrency(string $currency): self
     {
         $this->currency = $currency;
 

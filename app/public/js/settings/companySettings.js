@@ -1,19 +1,33 @@
 
-
-function saveCompanySettingsChanges()
-{
-    var name = document.getElementById('companyName').value;
-    var currency = document.getElementById('companyCurrency').value;
-
+$('#companySettingsEditButton').on('click', function (e) {
     $.ajax({
         url: '/general/settings/edit',
-        method: 'POST',
-        data: {
-            name: name,
-            currency: currency
+        method: 'GET',
+        success: function (data) {
+            document.getElementById('companySettingsEdit').innerHTML = data;
         },
-        success: function () {
-            location.reload();
+        error: function (data) {
+            console.log(data);
         }
     });
+});
+
+
+function sendPostRequest(form, e) {
+    e.preventDefault();
+    let $form = $(e.currentTarget);
+    $.ajax({
+        url: $form.attr('action'),
+        method: 'POST',
+        data: $form.serialize(),
+        success: function () {
+            location.reload();
+        },
+        error: function (jqXHR) {
+            console.log(jqXHR);
+            document.getElementById('companySettingsEdit').innerHTML = jqXHR.responseText;
+        }
+    });
+
+    return false;
 }
