@@ -43,7 +43,7 @@ class NavbarUserSubscriber implements EventSubscriberInterface
             ->setUsername($myUser->getEmail())
             ->setIsOnline(true)
             //todo change demo user by company name
-            ->setTitle('demo user')
+            ->setTitle($myUser->getCompany()->getName())
             ->setMemberSince($myUser->getCreatedAt())
         ;
 

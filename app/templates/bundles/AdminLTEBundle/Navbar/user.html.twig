@@ -20,7 +20,7 @@
             <li class="user-header">
                 {{ macro.avatar(user.avatar, user.username) }}
                 <p>
-                    {{ user.name }} - {{ user.title }}
+                    {{ user.name }} <br> {{ user.title }}
                     {% block member_since %}
                         <small>{{ 'Member since %date%'|trans({'%date%': user.memberSince|date('m.Y') }, 'AdminLTEBundle') }}</small>
                     {% endblock %}
