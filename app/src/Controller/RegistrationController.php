@@ -45,7 +45,8 @@ class RegistrationController extends AbstractController
                     $user,
                     $form->get('password')->getData()
                 )
-            );
+            )->setRoles(['ROLE_ADMIN'])
+            ;
 
             $company = new Company();
             $company->addUser($user);

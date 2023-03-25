@@ -16,6 +16,7 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $company = $user->getCompany();
+
         return $this->render('user/usersList.html.twig', [
             'users' => $repository->findBy(['company'   =>  $company])
         ]);

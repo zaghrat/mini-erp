@@ -1,10 +1,9 @@
-
-$('#companySettingsEditButton').on('click', function (e) {
+$('#userProfileEditButton').on('click', function () {
     $.ajax({
-        url: '/general/settings/edit',
+        url: '/user/profile/edit',
         method: 'GET',
         success: function (data) {
-            document.getElementById('companySettingsEdit').innerHTML = data;
+            document.getElementById('userProfileEdit').innerHTML = data;
         },
         error: function (data) {
             console.log(data);
@@ -16,15 +15,16 @@ $('#companySettingsEditButton').on('click', function (e) {
 function sendPostRequest(form, e) {
     e.preventDefault();
     let $form = $(e.currentTarget);
+
     $.ajax({
-        url: $form.attr('action'),
+        url: '/user/profile/edit',
         method: 'POST',
         data: $form.serialize(),
         success: function () {
             location.reload();
         },
         error: function (jqXHR) {
-            document.getElementById('companySettingsEdit').innerHTML = jqXHR.responseText;
+            document.getElementById('userProfileEdit').innerHTML = jqXHR.responseText;
         }
     });
 
