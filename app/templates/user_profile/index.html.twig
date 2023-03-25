@@ -8,14 +8,25 @@
 
 
 {% block page_content %}
-<div class="box box-primary">
-    <div class="box-body">
-        {{ form_start(form) }}
-        {{ form_row(form.firstName) }}
-        {{ form_row(form.lastName) }}
-        {{ form_row(form.email) }}
-        <button type="submit" class="btn btn-success">Save</button>
-        {{ form_end(form) }}
+    <div class="box box-primary">
+        <div class="box-body">
+            {{ form_start(form) }}
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.lastName) }}
+            {{ form_row(form.email) }}
+            <button type="button" id="userProfileEditButton" class="btn btn-primary pull-right" data-toggle="modal" data-target="#userProfileEdit">Save</button>
+            {{ form_end(form) }}
+        </div>
     </div>
-</div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="userProfileEdit" tabindex="-1" role="dialog">
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/userProfile/edit.js') }}"></script>
 {% endblock %}

@@ -14,9 +14,18 @@ class UserProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('firstName', TextType::class)
-            ->add('lastName', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('firstName', TextType::class, [
+                'required'  => true,
+                'attr'  =>  ['disabled'  => $options['disabled_fields']]
+            ])
+            ->add('lastName', TextType::class, [
+                'required'  => true,
+                'attr'  =>  ['disabled'  => $options['disabled_fields']]
+            ])
+            ->add('email', EmailType::class, [
+                'required'  => true,
+                'attr'  =>  ['disabled'  => $options['disabled_fields']]
+            ])
         ;
     }
 
@@ -24,7 +33,9 @@ class UserProfileType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'validation_groups' => ['user_profile'],
+            'disabled_fields' => false,
         ]);
+
+        $resolver->setAllowedTypes('disabled_fields', 'bool');
     }
 }
