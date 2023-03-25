@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Company;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +29,7 @@ class CompanySettingsType extends AbstractType
                 'required'  => false,
                 'attr' => ['disabled' => $options['disabled_fields']]
             ])
-            ->add('currency', TextType::class, [
+            ->add('currency', CurrencyType::class, [
                 'required' => true,
                 'attr' => ['disabled' => $options['disabled_fields']]
             ])

@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Gedmo\Mapping\Annotation as Gedmo;
+use function Amp\Promise\rethrow;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -257,5 +258,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->company = $company;
 
         return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return (in_array('ROLE_ADMIN', $this->getRoles()));
     }
 }

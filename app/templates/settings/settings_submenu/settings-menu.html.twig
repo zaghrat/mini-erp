@@ -2,10 +2,10 @@
 <div class="box box-primary">
     <ul class="list-group box-body">
         <li class="list-group-item {% if setting_subMenuItem == 'general' %}list-group-item-info {% endif %}">
-            <a href="">General</a>
+            <a href="{{ path('app_company_settings') }}">General</a>
         </li>
         <li class="list-group-item {% if setting_subMenuItem == 'users' %}list-group-item-info {% endif %}">
-            <a href="">Users</a>
+            <a href="{{ path('app_user_list') }}">Users</a>
         </li>
         <li class="list-group-item {% if setting_subMenuItem == 'roles_permissions' %}list-group-item-info {% endif %}">
             <a href="">Roles & permissions</a>

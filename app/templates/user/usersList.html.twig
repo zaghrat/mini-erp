@@ -1,0 +1,59 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block page_title %}Configurations{% endblock %}
+{% block page_subtitle %}Users List{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-3">
+        {% set setting_subMenuItem = 'users' %}
+        {% include 'settings/settings_submenu/settings-menu.html.twig' %}
+    </div>
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button type="button" class="pull-right btn bg-olive margin">ADD</button>
+                <h4><i class="fa fa-fw fa-gears"> </i> Users management</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover dataTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center">FIRST NAME</th>
+                            <th class="text-center">LAST NAME</th>
+                            <th class="text-center">EMAIL</th>
+                            <th class="text-center">IS ADMIN?</th>
+                            <th class="text-center">ACTIONS</th>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.firstname }}</td>
+                            <td>{{ user.lastname }}</td>
+                            <td>{{ user.email }}</td>
+                            <td class="text-center">
+                                {% if user.isAdmin %}
+                                    YES
+                                {% else %}
+                                    NO
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-warning">
+                                    <i class="fa fa-pencil"></i>
+                                </button>
+                                {% if app.user.id != user.id %}
+                                    <button class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
