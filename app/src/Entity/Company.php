@@ -13,6 +13,8 @@ class Company
 {
     private const DEFAULT_CURRENCY = 'TND';
     private const DEFAULT_NAME = 'COMPANY NAME';
+    private const FREE_USERS = 2;
+    private const PAID_USERS = 50;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -35,6 +37,14 @@ class Company
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $email = null;
+
+    #[ORM\Column]
+    private ?bool $isFreeAccount = true;
+
+    public function getMaxAllowedUserAccounts(): int
+    {
+        return $this->isFreeAccount() ? self::FREE_USERS : self::PAID_USERS;
+    }
 
     public function __construct()
     {
@@ -120,6 +130,18 @@ class Company
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function isFreeAccount(): ?bool
+    {
+        return $this->isFreeAccount;
+    }
+
+    public function setIsFreeAccount(bool $isFreeAccount): self
+    {
+        $this->isFreeAccount = $isFreeAccount;
 
         return $this;
     }

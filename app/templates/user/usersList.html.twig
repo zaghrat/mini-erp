@@ -12,7 +12,9 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
+                {% if users|length < app.user.company.getMaxAllowedUserAccounts %}
                 <button type="button" class="pull-right btn bg-olive margin">ADD</button>
+                {% endif %}
                 <h4><i class="fa fa-fw fa-gears"> </i> Users management</h4>
             </div>
             <div class="panel-body">
