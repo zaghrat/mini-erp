@@ -71,6 +71,34 @@ class UserController extends AbstractController
             'form'  =>  $form,
             'errors'    => $errors
         ], new Response('', count($errors) ? Response::HTTP_BAD_REQUEST : Response::HTTP_OK));
+    }
 
+    #[Route('/users/edit/{id}', name: 'app_users_edit_user')]
+    public function editUser(
+        int $id,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response
+    {
+
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $user = $userRepository->findOneBy(['id' => $id, 'company' => $company]);
+        if ($user) {
+            $form = $this->createForm(AddUserType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $user = $form->getData();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
+            return $this->renderForm('usersManagement/editUser.html.twig', ['form'  =>  $form, 'user' => $user]);
+        }
+
+
+        $this->renderView('usersManagement/userNotFound.html.twig');
     }
 }
