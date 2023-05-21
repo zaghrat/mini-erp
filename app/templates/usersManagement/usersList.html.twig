@@ -12,10 +12,10 @@
     <div class="col-md-9">
         <div class="panel panel-default">
             <div class="panel-heading">
-                {% if users|length < app.user.company.getMaxAllowedUserAccounts %}
-                <button type="button" class="pull-right btn bg-olive margin">ADD</button>
+                {% if users|length < company.getMaxAllowedUserAccounts %}
+                <button type="button" class="pull-right btn bg-olive margin" id="addNewUserBtn" data-toggle="modal" data-target="#addNewUser">ADD</button>
                 {% endif %}
-                <h4><i class="fa fa-fw fa-gears"> </i> Users management</h4>
+                <h4><i class="fa fa-fw fa-users"> </i> Users management</h4>
             </div>
             <div class="panel-body">
                 <table class="table table-bordered table-hover dataTable">
@@ -58,4 +58,13 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="addNewUser" tabindex="-1" role="dialog"></div>
+{% endblock %}
+
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/settings/usersManagament.js') }}"></script>
 {% endblock %}

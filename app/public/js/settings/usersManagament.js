@@ -1,9 +1,9 @@
-$('#companySettingsEditButton').on('click', function (e) {
+$('#addNewUserBtn').on('click', function (e) {
     $.ajax({
-        url: '/general/settings/edit',
+        url: '/users/add',
         method: 'GET',
         success: function (data) {
-            document.getElementById('companySettingsEdit').innerHTML = data;
+            document.getElementById('addNewUser').innerHTML = data;
         },
         error: function (data) {
             console.log(data);
@@ -11,20 +11,18 @@ $('#companySettingsEditButton').on('click', function (e) {
     });
 });
 
-
-
 function sendPostRequest(form, e) {
     e.preventDefault();
     let $form = $(e.currentTarget);
     $.ajax({
-        url: $form.attr('action'),
+        url: '/users/add',
         method: 'POST',
         data: $form.serialize(),
-        success: function () {
-            location.reload();
+        success: function (data) {
+           location.reload();
         },
         error: function (jqXHR) {
-            document.getElementById('companySettingsEdit').innerHTML = jqXHR.responseText;
+            document.getElementById('addNewUser').innerHTML = jqXHR.responseText;
         }
     });
 
