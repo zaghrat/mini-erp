@@ -7,6 +7,7 @@ use App\Form\AddUserType;
 use App\Repository\UserRepository;
 use App\Service\EmailSender\AddedUserPasswordEmailSenderService;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,7 +82,6 @@ class UserController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response
     {
-
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $company = $currentUser->getCompany();
@@ -94,11 +94,53 @@ class UserController extends AbstractController
                 $user = $form->getData();
                 $entityManager->persist($user);
                 $entityManager->flush();
+                $this->addFlash(
+                    'success',
+                    'Your changes have been saved!'
+                );
             }
             return $this->renderForm('usersManagement/editUser.html.twig', ['form'  =>  $form, 'user' => $user]);
         }
 
 
-        $this->renderView('usersManagement/userNotFound.html.twig');
+        return $this->renderView('usersManagement/userNotFound.html.twig');
+    }
+
+
+    #[Route('/users/confirm-delete/{id}', name: 'app_user_confirm_sssdelete')]
+    public function confirmDelete(
+        UserRepository $userRepository,
+        int $id
+    ): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $user = $userRepository->findOneBy(['id' => $id, 'company' => $company]);
+        return $this->render('usersManagement/confirmDelete.html.twig', ['user' => $user]);
+    }
+
+
+    #[Route('/users/delete/{id}', name: 'app_users_delete_user')]
+    public function deleteUser(EntityManagerInterface $entityManager, UserRepository $userRepository, int $id): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $user = $userRepository->findOneBy(['id' => $id, 'company' => $company]);
+
+        if ($user) {
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'User has been deleted!'
+            );
+
+            return new JsonResponse();
+        }
     }
 }

@@ -13,7 +13,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 {% if users|length < company.getMaxAllowedUserAccounts %}
-                <button type="button" class="pull-right btn bg-olive margin" id="addNewUserBtn" data-toggle="modal" data-target="#addNewUser">ADD</button>
+                <button type="button" class="pull-right btn bg-olive margin" id="addNewUserBtn" data-toggle="modal" data-target="#dialog">ADD</button>
                 {% endif %}
                 <h4><i class="fa fa-fw fa-users"> </i> Users management</h4>
             </div>
@@ -41,11 +41,11 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <button class="btn btn-warning" data-toggle="modal" data-target="#addNewUser" onclick="fetchUserData({{ user.id }})">
+                                <button class="btn btn-warning" data-toggle="modal" data-target="#dialog" onclick="fetchUserData({{ user.id }})">
                                     <i class="fa fa-pencil"></i>
                                 </button>
                                 {% if app.user.id != user.id %}
-                                    <button class="btn btn-danger">
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#dialog" onclick="confirmUserRemove({{ user.id }})">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 {% endif %}
@@ -59,7 +59,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="addNewUser" tabindex="-1" role="dialog"></div>
+<div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
 {% endblock %}
 
 
