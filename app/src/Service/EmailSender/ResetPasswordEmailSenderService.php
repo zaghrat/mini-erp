@@ -10,7 +10,7 @@ use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordToken;
 
 class ResetPasswordEmailSenderService extends EmailSenderService
 {
-    public function sendEmail(User $user, ResetPasswordToken $resetToken)
+    public function sendEmail(User $user, ResetPasswordToken $resetToken): void
     {
 
         $email = (new TemplatedEmail())

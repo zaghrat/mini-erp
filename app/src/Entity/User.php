@@ -27,6 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email]
+    #[Assert\NotBlank]
     #[Gedmo\Versioned]
     private ?string $email = null;
 
@@ -53,9 +54,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Gedmo\Versioned]
+    #[Assert\NotBlank]
     private string $firstName;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     #[Gedmo\Versioned]
     private string $lastName;
 
@@ -261,5 +264,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isAdmin(): bool
     {
         return (in_array('ROLE_ADMIN', $this->getRoles()));
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName . " " . $this->lastName;
     }
 }

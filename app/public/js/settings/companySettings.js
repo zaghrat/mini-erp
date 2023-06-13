@@ -1,4 +1,3 @@
-
 $('#companySettingsEditButton').on('click', function (e) {
     $.ajax({
         url: '/general/settings/edit',
@@ -11,6 +10,7 @@ $('#companySettingsEditButton').on('click', function (e) {
         }
     });
 });
+
 
 
 function sendPostRequest(form, e) {

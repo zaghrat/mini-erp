@@ -41,6 +41,9 @@ class Company
     #[ORM\Column]
     private ?bool $isFreeAccount = true;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: MeasuringUnit::class, orphanRemoval: true)]
+    private Collection $measuringUnits;
+
     public function getMaxAllowedUserAccounts(): int
     {
         return $this->isFreeAccount() ? self::FREE_USERS : self::PAID_USERS;
@@ -49,6 +52,7 @@ class Company
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->measuringUnits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +146,36 @@ class Company
     public function setIsFreeAccount(bool $isFreeAccount): self
     {
         $this->isFreeAccount = $isFreeAccount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MeasuringUnit>
+     */
+    public function getMeasuringUnits(): Collection
+    {
+        return $this->measuringUnits ?? [];
+    }
+
+    public function addMeasuringUnit(MeasuringUnit $measuringUnit): self
+    {
+        if (!$this->measuringUnits->contains($measuringUnit)) {
+            $this->measuringUnits->add($measuringUnit);
+            $measuringUnit->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeasuringUnit(MeasuringUnit $measuringUnit): self
+    {
+        if ($this->measuringUnits->removeElement($measuringUnit)) {
+            // set the owning side to null (unless already changed)
+            if ($measuringUnit->getCompany() === $this) {
+                $measuringUnit->setCompany(null);
+            }
+        }
 
         return $this;
     }

@@ -7,18 +7,18 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Address;
 
-class RegisterValidationEmailSenderService extends EmailSenderService
+class AddedUserPasswordEmailSenderService extends EmailSenderService
 {
-    public function sendEmail(User $user, string $validationUrl): void
+    public function sendEmail(User $user, string $plainPassword): void
     {
 
         $email = (new TemplatedEmail())
             ->from(new Address($this->parameterBag->get('ProGest-email'), $this->parameterBag->get('ProGest-name')))
             ->to($user->getEmail())
             ->subject($this->translator->trans('Your Account has been created', domain: 'emails'))
-            ->htmlTemplate('registration/email.html.twig')
+            ->htmlTemplate('usersManagement/email.html.twig')
             ->context([
-                'validationUrl' => $validationUrl,
+                'plainPassword' => $plainPassword,
             ])
         ;
 
