@@ -1,0 +1,44 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block title %}Configurations -- General Settings{% endblock %}
+
+{% block page_title %}Configurations{% endblock %}
+{% block page_subtitle %}General Settings{% endblock %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-3">
+            {% set setting_subMenuItem = 'measurements_unites' %}
+            {% include 'settings/settings_submenu/settings-menu.html.twig' %}
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="pull-right btn bg-olive margin" id="addNewUserBtn" data-toggle="modal" data-target="#dialog">ADD</button>
+                    <h4><i class="fa fa-fw fa-balance-scale"></i> Measuring Units</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th class="col-md-9 text-center">NAME</th>
+                            <th class="text-center">ACTIONS</th>
+                        </thead>
+                        <tbody>
+                            {% for measuring_unit in measuring_units %}
+                                <tr>
+                                    <td>{{ measuring_unit.name }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="companySettingsEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+
+{% endblock %}
