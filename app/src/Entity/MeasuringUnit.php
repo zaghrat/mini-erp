@@ -4,21 +4,31 @@ namespace App\Entity;
 
 use App\Repository\MeasuringUnitRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: MeasuringUnitRepository::class)]
+#[UniqueEntity(
+    fields: ['name', 'company'],
+    message: 'This name is already in use.',
+    errorPath: 'name',
+)]
 class MeasuringUnit
 {
-
     #[ORM\Id]
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    #[ORM\Id]
+    #[ORM\Column(length: 255, nullable: false)]
+    private string $name;
+
     #[ORM\ManyToOne(inversedBy: 'measuringUnits')]
     #[ORM\JoinColumn(nullable: false)]
-    private Company $company;
+    private ?Company $company;
 
-    public function getName(): ?string
+
+    public function getName(): string
     {
         return $this->name;
     }
@@ -35,10 +45,18 @@ class MeasuringUnit
         return $this->company;
     }
 
-    public function setCompany(Company $company): self
+    public function setCompany(?Company $company): self
     {
         $this->company = $company;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 }
