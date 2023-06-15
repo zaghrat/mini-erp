@@ -1,9 +1,9 @@
 {% extends '@AdminLTE/layout/default-layout.html.twig' %}
 
-{% block title %}Configurations -- General Settings{% endblock %}
+{% block title %}Configurations --  Measuring Units{% endblock %}
 
 {% block page_title %}Configurations{% endblock %}
-{% block page_subtitle %}General Settings{% endblock %}
+{% block page_subtitle %}Measuring Units{% endblock %}
 
 
 {% block page_content %}
@@ -15,7 +15,7 @@
         <div class="col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <button type="button" class="pull-right btn bg-olive margin" id="addNewUserBtn" data-toggle="modal" data-target="#dialog">ADD</button>
+                    <button type="button" class="pull-right btn bg-olive margin" id="addNewItemBtn" data-toggle="modal" data-target="#dialog">ADD</button>
                     <h4><i class="fa fa-fw fa-balance-scale"></i> Measuring Units</h4>
                 </div>
                 <div class="panel-body">
@@ -29,7 +29,14 @@
                             {% for measuring_unit in measuring_units %}
                                 <tr>
                                     <td>{{ measuring_unit.name }}</td>
-                                    <td></td>
+                                    <td class="text-center">
+                                        <button class="btn btn-warning" id="edit-item" data-toggle="modal" data-target="#dialog">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-danger" onclick="deleteItemConfirmation({{ measuring_unit.id }})" data-toggle="modal" data-target="#dialog">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -39,6 +46,10 @@
         </div>
     </div>
 
-    <div class="modal fade" id="companySettingsEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"></div>
+    <div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
+{% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/settings/measuringUnitsManagement.js') }}"></script>
 {% endblock %}

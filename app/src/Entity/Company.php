@@ -22,12 +22,12 @@ class Company
 
     #[ORM\Column(length: 255, nullable: false)]
     #[Assert\NotBlank]
-    private string $name = self::DEFAULT_NAME;
+    private string $name;
 
     #[Assert\NotBlank]
     #[Assert\Currency]
     #[ORM\Column(length: 10, nullable: false)]
-    private string $currency = self::DEFAULT_CURRENCY;
+    private string $currency;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
@@ -53,6 +53,8 @@ class Company
     {
         $this->users = new ArrayCollection();
         $this->measuringUnits = new ArrayCollection();
+        $this->currency = self::DEFAULT_CURRENCY;
+        $this->name = self::DEFAULT_NAME;
     }
 
     public function getId(): ?int
