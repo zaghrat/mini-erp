@@ -2,11 +2,12 @@
     <div class="modal-content">
         <div class="modal-header bg-blue-gradient">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel">Add Measuring Unit</h4>
+            <h4 class="modal-title" id="myModalLabel">Edit Measuring Unit</h4>
         </div>
-        {{ form_start(form, { 'attr': {'onsubmit': 'saveNewItem(this, event)' } }) }}
+        {{ form_start(form, { 'attr': {'onsubmit': 'saveItemChanges(this, event)' } }) }}
         <div class="modal-body">
             {{ form_row(form.name) }}
+            <input type="hidden" id="item_id"  value="{{ measuringUnit.id }}">
         </div>
         <div class="modal-footer">
             <button type="button" class="pull-left btn btn-default" data-dismiss="modal">Cancel</button>

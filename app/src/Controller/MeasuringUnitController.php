@@ -48,7 +48,7 @@ class MeasuringUnitController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Measuring Unit have been added!'
+                'Measuring Unit has been added!'
             );
         }
 
@@ -87,9 +87,43 @@ class MeasuringUnitController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Measuring Unit have been deleted!'
+                'Measuring Unit has been deleted!'
             );
         }
         return new JsonResponse();
+    }
+
+    #[Route(path: '/measuring-unit/edit/{id}')]
+    public function editItem(int $id, Request $request, EntityManagerInterface $entityManager, MeasuringUnitRepository $measuringUnitRepository): Response
+    {
+        /** @var Company $company */
+        $company = $this->getUser()->getCompany();
+        $measuringUnit = $measuringUnitRepository->findOneBy(['id' => $id, 'company' => $company]);
+        $form = $this->createForm(MeasuringUnitType::class, $measuringUnit);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+//            dump($form->all());
+//            die();
+
+
+            /** @var MeasuringUnit $measuringUnit */
+            $measuringUnit = $form->getData();
+            $measuringUnit->setCompany($company);
+            $company->addMeasuringUnit($measuringUnit);
+
+            $entityManager->persist($company);
+            $entityManager->persist($measuringUnit);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Measuring Unit changes have been saved!'
+            );
+        }
+
+        return $this->renderForm('measuring_unit/edit.html.twig', [
+            'form'  =>  $form,
+            'measuringUnit' => $measuringUnit
+        ]);
     }
 }
