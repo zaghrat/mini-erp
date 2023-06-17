@@ -102,10 +102,6 @@ class MeasuringUnitController extends AbstractController
         $form = $this->createForm(MeasuringUnitType::class, $measuringUnit);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-//            dump($form->all());
-//            die();
-
-
             /** @var MeasuringUnit $measuringUnit */
             $measuringUnit = $form->getData();
             $measuringUnit->setCompany($company);

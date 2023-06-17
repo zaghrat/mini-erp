@@ -16,6 +16,7 @@ services:
         container_name: erp-app
         ports:
             - "80:80"
+            - "443:443"
         volumes:
             - ./php/vhosts:/etc/apache2/sites-enabled
             - ./app:/var/www/app
