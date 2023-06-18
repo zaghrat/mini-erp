@@ -25,4 +25,3 @@ RUN python3 -m venv /opt/certbot/
 RUN /opt/certbot/bin/pip install --upgrade pip
 RUN /opt/certbot/bin/pip install certbot certbot-apache
 RUN ln -s /opt/certbot/bin/certbot /usr/bin/certbot
-RUN certbot --apache -d erp.droosbarmaja.com -m zaghrat.ahmed@gmail.com --agree-tos -v -n
