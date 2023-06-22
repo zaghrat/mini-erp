@@ -16,5 +16,8 @@
         <li class="list-group-item {% if setting_subMenuItem == 'payments_modes' %}list-group-item-info {% endif %}">
             <a href="">Payments Modes</a>
         </li>
+        <li class="list-group-item {% if setting_subMenuItem == 'vats_taxes' %}list-group-item-info {% endif %}">
+            <a href="{{ path('app_settings_vat') }}">VAT & Taxes</a>
+        </li>
     </ul>
 </div>

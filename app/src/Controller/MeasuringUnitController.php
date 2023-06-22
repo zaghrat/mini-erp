@@ -39,7 +39,6 @@ class MeasuringUnitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var MeasuringUnit $measuringUnit */
             $measuringUnit = $form->getData();
-            $measuringUnit->setCompany($company);
             $company->addMeasuringUnit($measuringUnit);
 
             $entityManager->persist($company);
