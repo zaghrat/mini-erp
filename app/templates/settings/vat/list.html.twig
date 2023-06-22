@@ -1,0 +1,69 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block title %}Configurations --  VAT & Taxes {% endblock %}
+
+{% block page_title %}Configurations{% endblock %}
+{% block page_subtitle %}VAT & Taxes{% endblock %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-3">
+            {% set setting_subMenuItem = 'vats_taxes' %}
+            {% include 'settings/settings_submenu/settings-menu.html.twig' %}
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="pull-right btn bg-olive margin" id="addNewItemBtn" data-toggle="modal" data-target="#dialog">ADD</button>
+                    <h4><i class="fas fa-landmark"></i> VAT List</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th class="col-md-9 text-left">VALUE</th>
+                            <th class="text-center">ACTIONS</th>
+                        </thead>
+                        <tbody>
+                            {% for vat in vatList %}
+                                <tr>
+                                    <td> {{ vat.value}} %</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="pull-right btn bg-olive margin" id="addNewItemBtn" data-toggle="modal" data-target="#dialog">ADD</button>
+                    <h4><i class="fas fa-stamp"></i> Taxes List</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th class="col-md-9 text-left">NAME</th>
+                            <th class="col-md-9 text-center">VALUE</th>
+                            <th class="text-center">ACTIONS</th>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/settings/vatManagement.js') }}"></script>
+{% endblock %}
