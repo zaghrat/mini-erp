@@ -55,4 +55,34 @@ class VatController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/edit/{id}', name: 'app_settings_vat_edit')]
+    public function edit(int $id, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        /** @var Company $company */
+        $company = $this->getUser()->getCompany();
+        $vatEntry = $entityManager->getRepository(VAT::class)->findOneBy(['id' => $id]);
+
+        $form = $this->createForm(VatType::class, $vatEntry);
+        $form->handleRequest($request);
+        if ($company->getVATs()->contains($vatEntry) && $form->isSubmitted() && $form->isValid()) {
+            /** @var VAT $vatEntry */
+            $vatEntry = $form->getData();
+            $vatEntry->addCompany($company);
+
+            $entityManager->persist($company);
+            $entityManager->persist($vatEntry);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'VAT changes have been saved!'
+            );
+        }
+
+        return $this->renderForm('settings/vat/edit.html.twig', [
+            'form'  =>  $form,
+            'vatEntry' => $vatEntry
+        ]);
+    }
 }
