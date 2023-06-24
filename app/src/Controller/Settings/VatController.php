@@ -6,8 +6,11 @@ use App\Entity\Company;
 use App\Entity\User;
 use App\Entity\VAT;
 use App\Form\VatType;
+use App\Repository\VATRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,5 +87,48 @@ class VatController extends AbstractController
             'form'  =>  $form,
             'vatEntry' => $vatEntry
         ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[Route(path: '/delete/{id}', methods: "GET")]
+    public function confirmDelete(int $id, VATRepository $repository): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $vatEntry = $repository->findOneBy(['id' => $id]);
+
+        if ( !$company->getVATs()->contains($vatEntry) ) {
+            throw new Exception('VAT NOT FOUND', 404);
+        }
+
+
+        return $this->render('settings/vat/confirm_delete.html.twig', ['vatEntry' => $vatEntry]);
+    }
+
+    #[Route(path: '/delete/{id}', methods: "DELETE")]
+    public function delete(int $id, VATRepository $repository, EntityManagerInterface $entityManager): Response
+    {
+
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $vatEntry = $repository->findOneBy(['id' => $id]);
+        if (is_object($vatEntry)) {
+            $company->removeVAT($vatEntry);
+            $entityManager->persist($company);
+            $entityManager->remove($vatEntry);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf("VAT %s%% has been deleted!", $vatEntry->getValue() * 100)
+            );
+        }
+        return new JsonResponse();
     }
 }
