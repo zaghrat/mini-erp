@@ -33,7 +33,7 @@ class VAT
 
     public function getValue(): ?float
     {
-        return $this->value * 100;
+        return $this->value;
     }
 
     public function setValue(float $value): self
