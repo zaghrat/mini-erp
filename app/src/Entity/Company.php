@@ -44,8 +44,11 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: MeasuringUnit::class, orphanRemoval: true)]
     private Collection $measuringUnits;
 
-    #[ORM\ManyToMany(targetEntity: VAT::class, mappedBy: 'company')]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: VAT::class, orphanRemoval: true)]
     private Collection $vATs;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Tax::class, orphanRemoval: true)]
+    private Collection $taxes;
 
     public function getMaxAllowedUserAccounts(): int
     {
@@ -59,6 +62,7 @@ class Company
         $this->currency = self::DEFAULT_CURRENCY;
         $this->name = self::DEFAULT_NAME;
         $this->vATs = new ArrayCollection();
+        $this->taxes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -207,7 +211,40 @@ class Company
     public function removeVAT(VAT $vAT): self
     {
         if ($this->vATs->removeElement($vAT)) {
-            $vAT->removeCompany($this);
+            // set the owning side to null (unless already changed)
+            if ($vAT->getCompany() === $this) {
+                $vAT->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tax>
+     */
+    public function getTaxes(): Collection
+    {
+        return $this->taxes;
+    }
+
+    public function addTax(Tax $tax): self
+    {
+        if (!$this->taxes->contains($tax)) {
+            $this->taxes->add($tax);
+            $tax->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTax(Tax $tax): self
+    {
+        if ($this->taxes->removeElement($tax)) {
+            // set the owning side to null (unless already changed)
+            if ($tax->getCompany() === $this) {
+                $tax->setCompany(null);
+            }
         }
 
         return $this;

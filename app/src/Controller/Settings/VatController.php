@@ -36,21 +36,21 @@ class VatController extends AbstractController
         $currentUser = $this->getUser();
         $company = $currentUser->getCompany();
         $vat = new VAT();
-        $vat->addCompany($company);
+        $vat->setCompany($company);
 
         $form = $this->createForm(VatType::class, $vat);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var VAT $vat */
             $vat = $form->getData();
-            $vat->addCompany($company);
+            $vat->setCompany($company);
 
             $entityManager->persist($vat);
             $entityManager->flush();
 
             $this->addFlash(
                 'success',
-                'VAT has been added!'
+                sprintf("VAT %s%% has been added!", $vat->getValue() * 100)
             );
         }
 
@@ -64,14 +64,14 @@ class VatController extends AbstractController
     {
         /** @var Company $company */
         $company = $this->getUser()->getCompany();
-        $vatEntry = $entityManager->getRepository(VAT::class)->findOneBy(['id' => $id]);
+        $vatEntry = $entityManager->getRepository(VAT::class)->findOneBy(['id' => $id, 'company' => $company]);
 
         $form = $this->createForm(VatType::class, $vatEntry);
         $form->handleRequest($request);
-        if ($company->getVATs()->contains($vatEntry) && $form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var VAT $vatEntry */
             $vatEntry = $form->getData();
-            $vatEntry->addCompany($company);
+            $vatEntry->setCompany($company);
 
             $entityManager->persist($company);
             $entityManager->persist($vatEntry);
@@ -79,7 +79,7 @@ class VatController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'VAT changes have been saved!'
+                sprintf("VAT %s%% changes have been saved!", $vatEntry->getValue() * 100)
             );
         }
 
@@ -99,12 +99,7 @@ class VatController extends AbstractController
         $currentUser = $this->getUser();
         $company = $currentUser->getCompany();
 
-        $vatEntry = $repository->findOneBy(['id' => $id]);
-
-        if ( !$company->getVATs()->contains($vatEntry) ) {
-            throw new Exception('VAT NOT FOUND', 404);
-        }
-
+        $vatEntry = $repository->findOneBy(['id' => $id, 'company' => $company]);
 
         return $this->render('settings/vat/confirm_delete.html.twig', ['vatEntry' => $vatEntry]);
     }
@@ -117,7 +112,7 @@ class VatController extends AbstractController
         $currentUser = $this->getUser();
         $company = $currentUser->getCompany();
 
-        $vatEntry = $repository->findOneBy(['id' => $id]);
+        $vatEntry = $repository->findOneBy(['id' => $id, 'company' => $company]);
         if (is_object($vatEntry)) {
             $company->removeVAT($vatEntry);
             $entityManager->persist($company);

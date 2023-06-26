@@ -18,12 +18,12 @@ class VAT
     #[ORM\Column]
     private ?float $value = null;
 
-    #[ORM\ManyToMany(targetEntity: Company::class, inversedBy: 'vATs')]
-    private Collection $company;
+    #[ORM\ManyToOne(inversedBy: 'vats')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Company $company;
 
     public function __construct()
     {
-        $this->company = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,26 +43,14 @@ class VAT
         return $this;
     }
 
-    /**
-     * @return Collection<int, Company>
-     */
-    public function getCompany(): Collection
+    public function getCompany(): Company
     {
         return $this->company;
     }
 
-    public function addCompany(Company $company): self
+    public function setCompany(?Company $company): self
     {
-        if (!$this->company->contains($company)) {
-            $this->company->add($company);
-        }
-
-        return $this;
-    }
-
-    public function removeCompany(Company $company): self
-    {
-        $this->company->removeElement($company);
+        $this->company = $company;
 
         return $this;
     }

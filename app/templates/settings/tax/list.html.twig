@@ -1,0 +1,59 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block title %}Configurations --  Taxes {% endblock %}
+
+{% block page_title %}Configurations{% endblock %}
+{% block page_subtitle %}Taxes{% endblock %}
+
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-3">
+            {% set setting_subMenuItem = 'taxes' %}
+            {% include 'settings/settings_submenu/settings-menu.html.twig' %}
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="pull-right btn bg-olive margin" id="addNewItemBtn" data-toggle="modal" data-target="#dialog">ADD</button>
+                    <h4><i class="fas fa-landmark"></i> TAXES</h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover table-striped table-responsive dataTable">
+                        <thead>
+                        <tr>
+                            <th class="col-md-5 text-center">NAME</th>
+                            <th class="col-md-2 text-center">VALUE</th>
+                            <th class="col-md-2 text-center">IS_ACTIVE</th>
+                            <th class="text-center">ACTIONS</th>
+                        </thead>
+                        <tbody>
+                            {% for tax in taxes %}
+                                <tr>
+                                    <td> {{ tax.name }}</td>
+                                    <td class="text-right"> {{ tax.value | format_number({fraction_digit: 3}) }}</td>
+                                    <td class="text-center">
+                                       <input type="checkbox" {% if tax.isActive %} checked {% endif %} disabled>
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-warning" id="edit-item" onclick="editItem({{ tax.id }})" data-toggle="modal" data-target="#dialog">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn btn-danger" onclick="deleteItemConfirmation({{ tax.id }})" data-toggle="modal" data-target="#dialog">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/settings/taxesManagement.js') }}"></script>
+{% endblock %}
