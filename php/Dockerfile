@@ -18,8 +18,6 @@ RUN cd /tmp && curl -sSk https://getcomposer.org/installer | php -- --disable-tl
     && mv composer.phar /usr/local/bin/composer
 
 WORKDIR /var/www/app
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install
 
 # Install certbot
 RUN apt install -y python3 python3-venv libaugeas0
