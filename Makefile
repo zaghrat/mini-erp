@@ -2,7 +2,7 @@ dev-deploy:
 	docker compose -f docker-compose.dev.yaml up --build
 
 test-deploy:
-	#git checkout php
+	git checkout php
 	docker compose -f docker-compose.test.yaml up -d --build
 
 ssl-certificate:
