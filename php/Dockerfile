@@ -19,8 +19,6 @@ RUN cd /tmp && curl -sSk https://getcomposer.org/installer | php -- --disable-tl
 
 WORKDIR /var/www/app
 
-RUN composer install
-
 # Install certbot
 RUN apt install -y python3 python3-venv libaugeas0
 RUN python3 -m venv /opt/certbot/
