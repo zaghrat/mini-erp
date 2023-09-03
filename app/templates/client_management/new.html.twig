@@ -1,0 +1,20 @@
+<div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+        <div class="modal-header bg-blue-gradient">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Add new Client</h4>
+        </div>
+        {{ form_start(form, { 'attr': {'onsubmit': 'saveNewItem(this, event)' } }) }}
+        <div class="modal-body">
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.fax) }}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="pull-left btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="pull-right btn btn-success">Save</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

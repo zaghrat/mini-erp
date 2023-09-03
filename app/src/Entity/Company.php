@@ -50,6 +50,9 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Tax::class, orphanRemoval: true)]
     private Collection $taxes;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Client::class, orphanRemoval: true)]
+    private Collection $clients;
+
     public function getMaxAllowedUserAccounts(): int
     {
         return $this->isFreeAccount() ? self::FREE_USERS : self::PAID_USERS;
@@ -63,6 +66,7 @@ class Company
         $this->name = self::DEFAULT_NAME;
         $this->vATs = new ArrayCollection();
         $this->taxes = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -244,6 +248,36 @@ class Company
             // set the owning side to null (unless already changed)
             if ($tax->getCompany() === $this) {
                 $tax->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getCompany() === $this) {
+                $client->setCompany(null);
             }
         }
 
