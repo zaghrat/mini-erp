@@ -40,8 +40,10 @@ class TaxController extends AbstractController
             /** @var Tax $tax */
             $tax = $form->getData();
             $tax->setCompany($company);
+            $company->addTax($tax);
 
             $entityManager->persist($tax);
+            $entityManager->persist($company);
             $entityManager->flush();
 
             $this->addFlash(
@@ -55,6 +57,13 @@ class TaxController extends AbstractController
         ]);
     }
 
+    /**
+     * @param int                    $id
+     * @param EntityManagerInterface $entityManager
+     * @param Request                $request
+     *
+     * @return Response
+     */
     #[Route('/edit/{id}', name: 'app_settings_tax_edit')]
     public function edit(int $id, EntityManagerInterface $entityManager, Request $request): Response
     {
