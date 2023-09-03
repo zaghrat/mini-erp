@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\isInstanceOf;
 
 /**
  *
@@ -119,5 +120,52 @@ class ClientManagementController extends AbstractController
             'form'  =>  $form,
             'client' => $client,
         ]);
+    }
+
+    /**
+     * @param int              $id
+     * @param ClientRepository $repository
+     *
+     * @return Response
+     */
+    #[Route(path: '/delete/{id}', methods: "GET")]
+    public function confirmDelete(int $id, ClientRepository $repository): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+        $client = $repository->findOneBy(['id' => $id, 'company' => $company]);
+
+        return $this->render('client_management/confirm_delete.html.twig', ['client' => $client]);
+    }
+
+    /**
+     * @param int                    $id
+     * @param ClientRepository       $repository
+     * @param EntityManagerInterface $entityManager
+     *
+     * @return JsonResponse
+     */
+    #[Route(path: '/delete/{id}', methods: "DELETE")]
+    public function deleteClient(int $id, ClientRepository $repository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $client = $repository->findOneBy(['id' => $id, 'company' => $company]);
+        if ($client instanceof Client) {
+            $company->removeClient($client);
+            $entityManager->persist($company);
+            $entityManager->remove($client);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf("Client %s has been deleted!", $client->getName())
+            );
+        }
+
+        return new JsonResponse();
     }
 }

@@ -63,3 +63,33 @@ function saveItemChanges(form, e)
 
     return false;
 }
+
+function deleteItemConfirmation(id)
+{
+    $.ajax({
+        url: '/clients-management/delete/' + id,
+        method: 'GET',
+        success: function (data) {
+            document.getElementById('dialog').innerHTML = data;
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}
+
+function deleteItemRequest(id)
+{
+    $.ajax({
+        url: '/clients-management/delete/' + id,
+        method: 'DELETE',
+        success: function () {
+            location.reload();
+        },
+        error: function (jqXHR) {
+            document.getElementById('dialog').innerHTML = jqXHR.responseText;
+        }
+    });
+
+    return false;
+}
