@@ -50,7 +50,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
         return [
             ['label' => 'Dashboard', 'icon' => 'fas fa-regular fa-chart-line', 'route' => 'app_index', 'key' => 'Dashboard'],
             ['label' => 'Clients', 'icon' => 'fas fa-users', 'route' => 'app_client_management', 'key' => 'Clients'],
-            ['label' => 'Fournisseurs', 'icon' => 'fas fa-truck', 'route' => 'app_login', 'key' => 'Fournisseurs'],
+            ['label' => 'Fournisseurs', 'icon' => 'fas fa-truck', 'route' => 'app_supplier_management', 'key' => 'Fournisseurs'],
             ['label' => 'Articles', 'icon' => 'fas fa-sitemap', 'route' => 'app_login', 'key' => 'Articles'],
             ['label' => 'Stock', 'icon' => 'fas fa-cubes', 'route' => 'app_login', 'key' => 'Stock'],
             ['label' => 'Achat Fournisseur', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Achat Fournisseur'],
