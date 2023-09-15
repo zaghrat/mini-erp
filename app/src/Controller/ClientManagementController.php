@@ -27,7 +27,7 @@ class ClientManagementController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'app_client_management')]
-    public function index(ClientRepository $clientRepository): Response
+    public function list(ClientRepository $clientRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();

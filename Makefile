@@ -5,6 +5,7 @@ dev-deploy:
 build:
 	git checkout php
 	rm -rf app/vendor
+	rm -f app/composer.lock
 	docker compose -f docker-compose.yaml up -d --build
 
 ssl-certificate:
