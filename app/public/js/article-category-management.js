@@ -1,6 +1,6 @@
 $('#addNewItemBtn').on('click', function (e) {
     $.ajax({
-        url: '/clients-management/new',
+        url: '/article-category-management/new',
         method: 'GET',
         success: function (data) {
             document.getElementById('dialog').innerHTML = data;
@@ -16,7 +16,7 @@ function saveNewItem(form, e)
     e.preventDefault();
     let $form = $(e.currentTarget);
     $.ajax({
-        url: '/clients-management/new',
+        url: '/article-category-management/new',
         method: 'POST',
         data: $form.serialize(),
         success: function (data) {
@@ -33,7 +33,7 @@ function saveNewItem(form, e)
 function editItem(id)
 {
     $.ajax({
-        url: '/clients-management/edit/' + id,
+        url: '/article-category-management/edit/' + id,
         method: 'GET',
         success: function (data) {
             document.getElementById('dialog').innerHTML = data;
@@ -50,7 +50,7 @@ function saveItemChanges(form, e)
     e.preventDefault();
     let $form = $(e.currentTarget);
     $.ajax({
-        url: '/clients-management/edit/' + id,
+        url: '/article-category-management/edit/' + id,
         method: 'POST',
         data: $form.serialize(),
         success: function (data) {
@@ -67,7 +67,7 @@ function saveItemChanges(form, e)
 function deleteItemConfirmation(id)
 {
     $.ajax({
-        url: '/clients-management/delete/' + id,
+        url: '/article-category-management/delete/' + id,
         method: 'GET',
         success: function (data) {
             document.getElementById('dialog').innerHTML = data;
@@ -81,7 +81,7 @@ function deleteItemConfirmation(id)
 function deleteItemRequest(id)
 {
     $.ajax({
-        url: '/clients-management/delete/' + id,
+        url: '/article-category-management/delete/' + id,
         method: 'DELETE',
         success: function () {
             location.reload();

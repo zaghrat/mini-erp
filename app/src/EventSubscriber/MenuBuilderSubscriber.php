@@ -48,16 +48,62 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     {
 
         return [
-            ['label' => 'Dashboard', 'icon' => 'fas fa-regular fa-chart-line', 'route' => 'app_index', 'key' => 'Dashboard'],
-            ['label' => 'Clients', 'icon' => 'fas fa-users', 'route' => 'app_client_management', 'key' => 'Clients'],
-            ['label' => 'Fournisseurs', 'icon' => 'fas fa-truck', 'route' => 'app_supplier_management', 'key' => 'Fournisseurs'],
-            ['label' => 'Articles', 'icon' => 'fas fa-sitemap', 'route' => 'app_login', 'key' => 'Articles'],
-            ['label' => 'Stock', 'icon' => 'fas fa-cubes', 'route' => 'app_login', 'key' => 'Stock'],
-            ['label' => 'Achat Fournisseur', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Achat Fournisseur'],
-            ['label' => 'Vente Client', 'icon' => 'fas fa-tachometer-alt', 'route' => 'app_login', 'key' => 'Vente Client'],
-            ['label' => 'Recouvrement', 'icon' => 'fas fa-users', 'route' => 'app_login', 'key' => 'Recuvrement'],
-            ['label' => 'cash box', 'icon' => 'fas fa-inbox', 'route' => 'app_login', 'key' => 'Caisse'],
-            ['label' => 'Configuration', 'icon' => 'fas fa-cogs', 'route' => 'app_company_settings', 'key' => 'Configuration'],
+            [
+                'label' => 'Dashboard',
+                'icon' => 'fas fa-regular fa-chart-line',
+                'route' => 'app_index',
+                'key' => 'Dashboard'
+            ], [
+                'label' => 'Clients',
+                'icon' => 'fas fa-users',
+                'route' => 'app_client_management',
+                'key' => 'Clients'
+            ], [
+                'label' => 'Fournisseurs',
+                'icon' => 'fas fa-truck',
+                'route' => 'app_supplier_management',
+                'key' => 'Fournisseurs'
+            ], [
+                'label' => 'Article categories',
+                'icon' => 'fas fa-truck',
+                'route' => 'app_article_category',
+                'key' => 'ArticleCategories'
+            ], [
+                'label' => 'Articles',
+                'icon' => 'fas fa-sitemap',
+                'route' => 'app_login',
+                'key' => 'Articles'
+            ], [
+                'label' => 'Stock',
+                'icon' => 'fas fa-cubes',
+                'route' => 'app_login',
+                'key' => 'Stock'
+            ], [
+                'label' => 'Achat Fournisseur',
+                'icon' => 'fas fa-tachometer-alt',
+                'route' => 'app_login',
+                'key' => 'Achat Fournisseur'
+            ], [
+                'label' => 'Vente Client',
+                'icon' => 'fas fa-tachometer-alt',
+                'route' => 'app_login',
+                'key' => 'Vente Client'
+            ], [
+                'label' => 'Recouvrement',
+                'icon' => 'fas fa-users',
+                'route' => 'app_login',
+                'key' => 'Recuvrement'
+            ], [
+                'label' => 'cash box',
+                'icon' => 'fas fa-inbox',
+                'route' => 'app_login',
+                'key' => 'Caisse'
+            ], [
+                'label' => 'Configuration',
+                'icon' => 'fas fa-cogs',
+                'route' => 'app_company_settings',
+                'key' => 'Configuration'
+            ],
         ];
     }
 }
