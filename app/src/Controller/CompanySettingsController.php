@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CompanySettingsController extends AbstractController
 {
     #[Route('/general/settings', name: 'app_company_settings')]
-    public function companySettings(EntityManagerInterface $entityManager): Response
+    public function companySettings(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -29,8 +29,11 @@ class CompanySettingsController extends AbstractController
     }
 
     #[Route('/general/settings/edit', name: 'app_edit_company_settings', methods: ['GET', 'POST'])]
-    public function editCompanySettings(FormFactoryInterface $formFactory, Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function editCompanySettings(
+        FormFactoryInterface $formFactory,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
         $responseCode = Response::HTTP_OK;
         /** @var User $user */
         $user = $this->getUser();

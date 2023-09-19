@@ -71,7 +71,7 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
             ], [
                 'label' => 'Articles',
                 'icon' => 'fas fa-sitemap',
-                'route' => 'app_login',
+                'route' => 'app_article_management_list',
                 'key' => 'Articles'
             ], [
                 'label' => 'Stock',
