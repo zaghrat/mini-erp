@@ -36,8 +36,6 @@ class ArticleController extends AbstractController
         $article->setCompany($company);
 
         $form = $this->createForm(ArticleType::class, $article, ['companyId' => $company->getId()]);
-
-
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Article $article */
@@ -47,13 +45,49 @@ class ArticleController extends AbstractController
 
             $entityManager->persist($article);
             $entityManager->persist($company);
-
             $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf("Article %s has been added!", $article->getName())
+            );
 
             return $this->redirectToRoute('app_article_management_list');
         }
 
         return $this->render('article/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/edit/{gid}', name: 'app_article_management_edit_entry')]
+    public function edit(string $gid, Request $request, EntityManagerInterface $entityManager, ArticleRepository $articleRepository): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+        $article = $articleRepository->findOneBy(['guid' => $gid]);
+        $form = $this->createForm(ArticleType::class, $article, ['companyId' => $company->getId()]);
+
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Article $article */
+            $article = $form->getData();
+            $article->setCompany($company);
+
+            $entityManager->persist($article);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf("Article Category %s changes have been saved!", $article->getName())
+            );
+
+            return $this->redirectToRoute('app_article_management_list');
+        }
+
+        return $this->render('article/edit.html.twig', [
             'form' => $form->createView(),
         ]);
     }
