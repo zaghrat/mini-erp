@@ -59,6 +59,9 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: ArticleCategory::class, orphanRemoval: true)]
     private Collection $articleCategories;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Article::class)]
+    private Collection $articles;
+
     public function getMaxAllowedUserAccounts(): int
     {
         return $this->isFreeAccount() ? self::FREE_USERS : self::PAID_USERS;
@@ -75,6 +78,7 @@ class Company
         $this->clients = new ArrayCollection();
         $this->suppliers = new ArrayCollection();
         $this->articleCategories = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -346,6 +350,36 @@ class Company
             // set the owning side to null (unless already changed)
             if ($articleCategory->getCompany() === $this) {
                 $articleCategory->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getCompany() === $this) {
+                $article->setCompany(null);
             }
         }
 

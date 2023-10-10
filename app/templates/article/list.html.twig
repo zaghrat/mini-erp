@@ -1,0 +1,59 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block title %}Article Management{% endblock %}
+
+{% block page_title %} List of articles {% endblock %}
+{% block page_subtitle %} {% endblock %}
+
+{% block page_content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <a href="{{ path('app_article_management_new_entry') }}">
+                    <button type="button" class="pull-right btn bg-olive margin">ADD</button>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover dataTable">
+                <thead>
+                <tr>
+                    <th class="text-center">NAME</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Qty</th>
+                    <th class="text-center">Min Qty Limit</th>
+                    <th class="text-center">Category</th>
+                    <th class="text-center">ACTIONS</th>
+                </thead>
+                <tbody>
+                {% for article in articles %}
+                    <tr>
+                        <td>{{ article.name }}</td>
+                        <td>{{ article.price }}</td>
+                        <td>{{ article.quantity }}</td>
+                        <td>{{ article.minimumQuantityLimit }}</td>
+                        <td>{{ article.category }}</td>
+                        <td class="text-center">
+                            <a href="{{ path('app_article_management_edit_entry', {'gid': article.guid }) }}">
+                            <button class="btn btn-warning" id="edit-item">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                        </a>
+                            <button class="btn btn-danger" onclick="deleteItemConfirmation({{ article.id }})" data-toggle="modal" data-target="#dialog">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/article-management.js') }}"></script>
+{% endblock %}
