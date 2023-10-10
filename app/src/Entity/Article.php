@@ -36,7 +36,7 @@ class Article
     private ArticleCategory $category;
 
     #[ORM\ManyToOne(inversedBy: 'articles')]
-    private Company $company;
+    private ?Company $company;
 
     #[ORM\Column]
     private int $minimumQuantityLimit = 0;
@@ -136,7 +136,7 @@ class Article
         return $this->company;
     }
 
-    public function setCompany(Company $company): static
+    public function setCompany(?Company $company): static
     {
         $this->company = $company;
 

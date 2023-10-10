@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -61,8 +62,12 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/edit/{gid}', name: 'app_article_management_edit_entry')]
-    public function edit(string $gid, Request $request, EntityManagerInterface $entityManager, ArticleRepository $articleRepository): Response
-    {
+    public function edit(
+        string $gid,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ArticleRepository $articleRepository
+    ): Response {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         $company = $currentUser->getCompany();
@@ -90,5 +95,42 @@ class ArticleController extends AbstractController
         return $this->render('article/edit.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route(path: '/delete/{id}', methods: "GET")]
+    public function confirmDelete(string $id, ArticleRepository $repository): Response
+    {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+        $article = $repository->findOneBy(['id' => $id, 'company' => $company]);
+
+        return $this->render('article/confirm_delete.html.twig', ['article' => $article]);
+    }
+
+    #[Route(path: '/delete/{id}', methods: "DELETE")]
+    public function deleteClient(
+        int $id,
+        ArticleRepository $repository,
+        EntityManagerInterface $entityManager
+    ): JsonResponse {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $company = $currentUser->getCompany();
+
+        $article = $repository->findOneBy(['id' => $id, 'company' => $company]);
+        if ($article instanceof Article) {
+            $company->removeArticle($article);
+            $entityManager->persist($company);
+            $entityManager->remove($article);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf("Article %s has been deleted!", $article->getName())
+            );
+        }
+
+        return new JsonResponse();
     }
 }

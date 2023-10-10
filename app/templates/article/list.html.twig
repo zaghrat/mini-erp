@@ -50,6 +50,10 @@
         </div>
     </div>
 
-
     <div class="modal fade" id="dialog" tabindex="-1" role="dialog"></div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/article-management.js') }}"></script>
 {% endblock %}
