@@ -2,6 +2,7 @@
 // src/EventSubscriber/MenuBuilderSubscriber.php
 namespace App\EventSubscriber;
 
+use KevinPapst\AdminLTEBundle\Event\BreadcrumbMenuEvent;
 use KevinPapst\AdminLTEBundle\Event\SidebarMenuEvent;
 use KevinPapst\AdminLTEBundle\Model\MenuItemModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,15 +13,34 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
     {
         return [
             SidebarMenuEvent::class => ['onSetupMenu', 100],
-            BreadcrumbMenuEvent::class => ['onSetupNavbar', 100],
+            BreadcrumbMenuEvent::class => ['onSetupMenu', 100],
         ];
     }
 
-    public function onSetupMenu(SidebarMenuEvent $event)
+    public function onSetupMenu(SidebarMenuEvent $event): void
     {
         foreach ($this->getMenuItems() as $menuItem) {
-            $menuItem = new MenuItemModel($menuItem['key'], $menuItem['label'], $menuItem['route'], [], $menuItem['icon']);
-            $event->addItem($menuItem);
+            $menuItemModel = new MenuItemModel(
+                $menuItem['key'],
+                $menuItem['label'],
+                $menuItem['route'],
+                [],
+                $menuItem['icon']
+            );
+
+            foreach ($menuItem['subMenu'] as $menuItemChild) {
+                $menuItemModel->addChild(
+                    new MenuItemModel(
+                        $menuItemChild['key'],
+                        $menuItemChild['label'],
+                        $menuItemChild['route'],
+                        [],
+                        $menuItemChild['icon']
+                    )
+                );
+            }
+
+            $event->addItem($menuItemModel);
         }
 
         $this->activateByRoute(
@@ -52,57 +72,79 @@ class MenuBuilderSubscriber implements EventSubscriberInterface
                 'label' => 'Dashboard',
                 'icon' => 'fas fa-regular fa-chart-line',
                 'route' => 'app_index',
-                'key' => 'Dashboard'
+                'key' => 'Dashboard',
+                'subMenu' => []
             ], [
                 'label' => 'Clients',
                 'icon' => 'fas fa-users',
                 'route' => 'app_client_management',
-                'key' => 'Clients'
+                'key' => 'Clients',
+                'subMenu' => []
             ], [
                 'label' => 'Fournisseurs',
                 'icon' => 'fas fa-truck',
                 'route' => 'app_supplier_management',
-                'key' => 'Fournisseurs'
+                'key' => 'Fournisseurs',
+                'subMenu' => []
             ], [
                 'label' => 'Article categories',
                 'icon' => 'fas fa-truck',
                 'route' => 'app_article_category',
-                'key' => 'ArticleCategories'
+                'key' => 'ArticleCategories',
+                'subMenu' => []
             ], [
                 'label' => 'Articles',
                 'icon' => 'fas fa-sitemap',
                 'route' => 'app_article_management_list',
-                'key' => 'Articles'
+                'key' => 'Articles',
+                'subMenu' => []
             ], [
-                'label' => 'Stock',
-                'icon' => 'fas fa-cubes',
-                'route' => 'app_login',
-                'key' => 'Stock'
-            ], [
-                'label' => 'Achat Fournisseur',
+                'label' => 'Achat',
                 'icon' => 'fas fa-tachometer-alt',
                 'route' => 'app_login',
-                'key' => 'Achat Fournisseur'
+                'key' => 'Achat',
+                'subMenu' => [
+                    [
+                        'label' => 'Commande Fournissuer',
+                        'icon' => 'fas fa-regular fa-chart-line',
+                        'route' => 'app_supplier_order_list',
+                        'key' => 'CF',
+                    ],[
+                        'label' => 'Bon de reception',
+                        'icon' => 'fas fa-regular fa-chart-line',
+                        'route' => 'app_supplier_receipt',
+                        'key' => 'BR',
+                    ],[
+                        'label' => 'Supplier invoice',
+                        'icon' => 'fas fa-regular fa-chart-line',
+                        'route' => 'app_supplier_invoice',
+                        'key' => 'FF',
+                    ]
+                ]
             ], [
                 'label' => 'Vente Client',
                 'icon' => 'fas fa-tachometer-alt',
                 'route' => 'app_login',
-                'key' => 'Vente Client'
+                'key' => 'Vente Client',
+                'subMenu' => []
             ], [
                 'label' => 'Recouvrement',
                 'icon' => 'fas fa-users',
                 'route' => 'app_login',
-                'key' => 'Recuvrement'
+                'key' => 'Recuvrement',
+                'subMenu' => []
             ], [
                 'label' => 'cash box',
                 'icon' => 'fas fa-inbox',
                 'route' => 'app_login',
-                'key' => 'Caisse'
+                'key' => 'Caisse',
+                'subMenu' => []
             ], [
                 'label' => 'Configuration',
                 'icon' => 'fas fa-cogs',
                 'route' => 'app_company_settings',
-                'key' => 'Configuration'
+                'key' => 'Configuration',
+                'subMenu' => []
             ],
         ];
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\SupplierDTO;
 use App\Entity\Supplier;
 use App\Entity\User;
 use App\Form\SupplierType;
@@ -134,5 +135,17 @@ class SupplierManagementController extends AbstractController
         }
 
         return new JsonResponse();
+    }
+
+    #[Route('/{id}', methods: "GET")]
+    public function getSupplierInfo(SupplierRepository $supplierRepository, int $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $supplierRepository->findOneBy(['company' => $user->getCompany(), 'id' => $id]);
+
+        return new JsonResponse([
+            'data'  => $data ? new SupplierDTO($data) : null,
+        ]);
     }
 }

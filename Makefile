@@ -1,9 +1,9 @@
 dev-deploy:
-	docker compose -f docker-compose.dev.yaml up --build
+	docker compose -f docker-compose.yaml up -d --build
 
 
 build:
-	git checkout php
+#	git checkout php
 	rm -rf app/vendor
 	rm -f app/composer.lock
 	docker compose -f docker-compose.yaml up -d --build

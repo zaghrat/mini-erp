@@ -1,0 +1,43 @@
+{% extends '@AdminLTE/layout/default-layout.html.twig' %}
+
+{% block title %}Achat - Commande Fournissuer{% endblock %}
+{% block page_title %} Achat {% endblock %}
+{% block page_subtitle %} Commande Fournissuer{% endblock %}
+
+{% block page_content %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <a href="{{ path('app_supplier_order_new') }}">
+                    <button type="button" class="pull-right btn bg-olive margin">ADD</button>
+                </a>
+            </div>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover dataTable">
+                <thead>
+                    <tr>
+                        <th>REFERENCE</th>
+                        <th>DATE</th>
+                        <th>Supplier</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplierOrder in supplierOrders %}
+                        <tr>
+                            <td>{{ supplierOrder.internalReference }}</td>
+                            <td>{{ supplierOrder.createdAt }}</td>
+                            <td>{{ supplierOrder.supplier.name }}</td>
+                            <td>{{ supplierOrder.totalAmount }}</td>
+                            <td>{{ supplierOrder.status }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

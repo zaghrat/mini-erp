@@ -62,6 +62,9 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Article::class)]
     private Collection $articles;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: SupplierOrder::class, orphanRemoval: true)]
+    private Collection $supplierOrders;
+
     public function getMaxAllowedUserAccounts(): int
     {
         return $this->isFreeAccount() ? self::FREE_USERS : self::PAID_USERS;
@@ -79,6 +82,7 @@ class Company
         $this->suppliers = new ArrayCollection();
         $this->articleCategories = new ArrayCollection();
         $this->articles = new ArrayCollection();
+        $this->supplierOrders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -380,6 +384,36 @@ class Company
             // set the owning side to null (unless already changed)
             if ($article->getCompany() === $this) {
                 $article->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SupplierOrder>
+     */
+    public function getSupplierOrders(): Collection
+    {
+        return $this->supplierOrders;
+    }
+
+    public function addSupplierOrder(SupplierOrder $supplierOrder): static
+    {
+        if (!$this->supplierOrders->contains($supplierOrder)) {
+            $this->supplierOrders->add($supplierOrder);
+            $supplierOrder->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupplierOrder(SupplierOrder $supplierOrder): static
+    {
+        if ($this->supplierOrders->removeElement($supplierOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($supplierOrder->getCompany() === $this) {
+                $supplierOrder->setCompany(null);
             }
         }
 

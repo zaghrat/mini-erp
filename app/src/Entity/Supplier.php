@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SupplierRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SupplierRepository::class)]
@@ -28,6 +30,14 @@ class Supplier
     #[ORM\ManyToOne(inversedBy: 'suppliers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
+
+    #[ORM\OneToMany(mappedBy: 'supplier', targetEntity: SupplierOrder::class, orphanRemoval: true)]
+    private Collection $supplierOrders;
+
+    public function __construct()
+    {
+        $this->supplierOrders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +100,36 @@ class Supplier
     public function setCompany(?Company $company): static
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, SupplierOrder>
+     */
+    public function getSupplierOrders(): Collection
+    {
+        return $this->supplierOrders;
+    }
+
+    public function addSupplierOrder(SupplierOrder $supplierOrder): static
+    {
+        if (!$this->supplierOrders->contains($supplierOrder)) {
+            $this->supplierOrders->add($supplierOrder);
+            $supplierOrder->setSupplier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupplierOrder(SupplierOrder $supplierOrder): static
+    {
+        if ($this->supplierOrders->removeElement($supplierOrder)) {
+            // set the owning side to null (unless already changed)
+            if ($supplierOrder->getSupplier() === $this) {
+                $supplierOrder->setSupplier(null);
+            }
+        }
 
         return $this;
     }
