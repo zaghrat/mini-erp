@@ -19,7 +19,7 @@
                 <thead>
                 <tr>
                     <th class="text-center">NAME</th>
-                    <th class="text-center">Price</th>
+                    <th class="text-center">Pre-tax Price</th>
                     <th class="text-center">Qty</th>
                     <th class="text-center">Min Qty Limit</th>
                     <th class="text-center">Category</th>
@@ -29,7 +29,7 @@
                 {% for article in articles %}
                     <tr>
                         <td>{{ article.name }}</td>
-                        <td>{{ article.price }}</td>
+                        <td>{{ article.preTaxPrice }}</td>
                         <td>{{ article.quantity }}</td>
                         <td>{{ article.minimumQuantityLimit }}</td>
                         <td>{{ article.category }}</td>

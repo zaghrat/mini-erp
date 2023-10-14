@@ -20,7 +20,7 @@ class ArticleType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('barcode')
-            ->add('price')
+            ->add('preTaxPrice')
             ->add('quantity')
             ->add('minimumQuantityLimit')
             ->add('category', EntityType::class, [

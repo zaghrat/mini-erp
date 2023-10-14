@@ -27,7 +27,7 @@ class Article
     private string $guid;
 
     #[ORM\Column(nullable: false)]
-    private float $price = 0.000;
+    private float $preTaxPrice = 0.000;
 
     #[ORM\Column(nullable: false)]
     private int $quantity = 0;
@@ -95,14 +95,14 @@ class Article
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPreTaxPrice(): ?float
     {
-        return $this->price;
+        return $this->preTaxPrice;
     }
 
-    public function setPrice(float $price): static
+    public function setPreTaxPrice(float $preTaxPrice): static
     {
-        $this->price = $price;
+        $this->preTaxPrice = $preTaxPrice;
 
         return $this;
     }

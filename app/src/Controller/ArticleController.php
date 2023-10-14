@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\DTO\ArticleDTO;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ArticleType;
@@ -132,5 +133,17 @@ class ArticleController extends AbstractController
         }
 
         return new JsonResponse();
+    }
+
+    #[Route('/{id}', methods: "GET")]
+    public function getSupplierInfo(ArticleRepository $articleRepository, int $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $articleRepository->findOneBy(['company' => $user->getCompany(), 'id' => $id]);
+
+        return new JsonResponse([
+            'data'  => $data ? new ArticleDTO($data) : null,
+        ]);
     }
 }

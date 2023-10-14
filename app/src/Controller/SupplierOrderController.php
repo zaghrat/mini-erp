@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\ArticleRepository;
 use App\Repository\SupplierOrderRepository;
 use App\Repository\SupplierRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,13 +35,25 @@ class SupplierOrderController extends AbstractController
     }
 
     #[Route('/supplier-list', methods: "GET")]
-    public function getListOfSupplier(SupplierRepository $supplierRepository): Response
+    public function getListOfSuppliers(SupplierRepository $supplierRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
         return $this->render('supplier_order/listOfSuppliers.html.twig', [
             'suppliersList' => $supplierRepository->findBy(['company' => $user->getCompany()])
+        ]);
+    }
+
+    #[Route('/article-list/{id}', methods: "GET")]
+    public function getListOfArticles(int $id, ArticleRepository $articleRepository): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return $this->render('supplier_order/listOfArticles.html.twig', [
+            'articlesList' => $articleRepository->findBy(['company' => $user->getCompany()]),
+            'rowIndex'    => $id
         ]);
     }
 }
