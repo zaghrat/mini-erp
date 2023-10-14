@@ -28,29 +28,27 @@ function newArticleItem()
     clearAndWriteOrderItems();
 }
 
-function clearAndWriteOrderItems()
-{
+function clearAndWriteOrderItems() {
     document.getElementById('orderItems').innerHTML = '';
 
     for (let i = 0; i < orderItems.length; i++) {
         newArticle(i, orderItems[i]);
     }
 
-    function newArticle(id, article)
-    {
+    function newArticle(id, article) {
         let table = document.getElementById('orderItems');
         let tr = document.createElement("tr");
 
         let td_name = document.createElement("td");
-        td_name.innerHTML = "<input type='text' value='"+article.name+"' class='form-control' id='name_item_"+id+"' onclick='selectProductItem("+id+")' data-toggle=\"modal\" data-target=\"#dialog\">";
+        td_name.innerHTML = "<input type='text' value='" + article.name + "' class='form-control' id='name_item_" + id + "' onclick='selectProductItem(" + id + ")' data-toggle=\"modal\" data-target=\"#dialog\">";
         tr.appendChild(td_name);
 
         let td_qty = document.createElement("td");
-        td_qty.innerHTML = "<input type='number' value='"+article.qty+"' min='0' class='form-control' id='qty_item_"+id+"' onchange='updatePreTaxTotal(" + id+ ")'>";
+        td_qty.innerHTML = "<input type='number' value='" + article.qty + "' min='0' class='form-control' id='qty_item_" + id + "' onchange='updatePreTaxTotal(" + id + ")'>";
         tr.appendChild(td_qty);
 
         let td_price = document.createElement("td");
-        td_price.innerHTML = "<input type='number' value='"+article.price+"' class='form-control' step='0.005' min='0' id='price_item_"+id+"' onchange='updatePreTaxTotal(" + id+ ")' >";
+        td_price.innerHTML = "<input type='number' value='" + article.price + "' class='form-control' step='0.005' min='0' id='price_item_" + id + "' onchange='updatePreTaxTotal(" + id + ")' >";
         tr.appendChild(td_price);
 
         let td_vat = document.createElement("td");
@@ -59,7 +57,7 @@ function clearAndWriteOrderItems()
 
         let preTaxTotal = new Intl.NumberFormat().format(article.price * article.qty);
         let td_preTaxTotal = document.createElement("td");
-        td_preTaxTotal.innerHTML = "<label id='td_preTaxTotal_"+ id +"'>" + preTaxTotal + "</label>";
+        td_preTaxTotal.innerHTML = "<label id='td_preTaxTotal_" + id + "'>" + preTaxTotal + "</label> <button class='pull-right btn-link'><i class='fa fa-trash text-danger' onclick='deleteArticle(" + id + ")'></i></button>";
         tr.appendChild(td_preTaxTotal);
 
         table.appendChild(tr);
@@ -67,6 +65,14 @@ function clearAndWriteOrderItems()
 
         updatePreTaxTotal(id);
     }
+}
+
+function deleteArticle(index)
+{
+    orderItems.splice(index, 1);
+
+    clearAndWriteOrderItems();
+    calculateTotal();
 }
 
 
