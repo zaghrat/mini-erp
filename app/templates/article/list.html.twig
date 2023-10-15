@@ -22,6 +22,7 @@
                     <th class="text-center">Pre-tax Price</th>
                     <th class="text-center">Qty</th>
                     <th class="text-center">Min Qty Limit</th>
+                    <th class="text-center">VAT</th>
                     <th class="text-center">Category</th>
                     <th class="text-center">ACTIONS</th>
                 </thead>
@@ -32,6 +33,7 @@
                         <td>{{ article.preTaxPrice }}</td>
                         <td>{{ article.quantity }}</td>
                         <td>{{ article.minimumQuantityLimit }}</td>
+                        <td>{{ article.vat }}</td>
                         <td>{{ article.category }}</td>
                         <td class="text-center">
                             <a href="{{ path('app_article_management_edit_entry', {'gid': article.guid }) }}">

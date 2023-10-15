@@ -6,8 +6,8 @@ function initialiseOrderArticles()
     orderItems.push({
         'name': '',
         'qty': 1,
-        'price': '0.000',
-        'vat': '',
+        'price': 0.000,
+        'vat': 0,
         'preTaxTotal': 0
     });
 
@@ -20,22 +20,24 @@ function newArticleItem()
     orderItems.push({
         'name': '',
         'qty': 1,
-        'price': '0.000',
-        'vat': '',
+        'price': 0.000,
+        'vat': 0,
         'preTaxTotal': 0
     });
 
     clearAndWriteOrderItems();
 }
 
-function clearAndWriteOrderItems() {
+function clearAndWriteOrderItems()
+{
     document.getElementById('orderItems').innerHTML = '';
 
     for (let i = 0; i < orderItems.length; i++) {
         newArticle(i, orderItems[i]);
     }
 
-    function newArticle(id, article) {
+    function newArticle(id, article)
+    {
         let table = document.getElementById('orderItems');
         let tr = document.createElement("tr");
 
@@ -52,7 +54,7 @@ function clearAndWriteOrderItems() {
         tr.appendChild(td_price);
 
         let td_vat = document.createElement("td");
-        td_vat.innerHTML = "<input>";
+        td_vat.innerHTML = "<input type='number' class='form-control' value='" + article.vat + "' class='form-control' step='1' min='0' id='vat_item_" + id + "'>";
         tr.appendChild(td_vat);
 
         let preTaxTotal = new Intl.NumberFormat().format(article.price * article.qty);
@@ -93,6 +95,8 @@ function calculateTotal()
     for (let i = 0; i < orderItems.length; i++) {
         totalPreTax = totalPreTax + parseFloat(orderItems[i].preTaxTotal);
     }
+
+    totalPreTax = new Intl.NumberFormat().format(totalPreTax);
 
     document.getElementById('totalPreTax').innerText = totalPreTax;
 }
@@ -166,8 +170,12 @@ function confirmArticleSelection(index)
         url: '/article-management/' + articleId,
         method: 'GET',
         success: function (response) {
+            console.log(response.data);
+
+
             orderItems[index].name = response.data.name;
             orderItems[index].price = response.data.preTaxPrice;
+            orderItems[index].vat = Math.floor(response.data.vat * 100);
 
             $('#dialog').modal('toggle');
             clearAndWriteOrderItems();

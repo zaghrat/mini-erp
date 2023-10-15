@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use App\Entity\ArticleCategory;
+use App\Entity\VAT;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,6 +24,15 @@ class ArticleType extends AbstractType
             ->add('preTaxPrice')
             ->add('quantity')
             ->add('minimumQuantityLimit')
+            ->add('vat', EntityType::class, [
+                'class' => VAT::class,
+                'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
+                    return $er->createQueryBuilder('vat')
+                        ->where('vat.company =  :companyId')
+                        ->setParameter('companyId', $options['companyId'])
+                        ->orderBy('vat.value', 'ASC');
+                },
+            ])
             ->add('category', EntityType::class, [
                 'class' => ArticleCategory::class,
                 'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {

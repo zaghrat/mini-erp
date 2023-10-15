@@ -41,6 +41,9 @@ class Article
     #[ORM\Column]
     private int $minimumQuantityLimit = 0;
 
+    #[ORM\ManyToOne]
+    private ?VAT $vat = null;
+
 
     public function getId(): ?int
     {
@@ -151,6 +154,18 @@ class Article
     public function setMinimumQuantityLimit(int $minimumQuantityLimit): static
     {
         $this->minimumQuantityLimit = $minimumQuantityLimit;
+
+        return $this;
+    }
+
+    public function getVat(): ?VAT
+    {
+        return $this->vat;
+    }
+
+    public function setVat(?VAT $vat): static
+    {
+        $this->vat = $vat;
 
         return $this;
     }
